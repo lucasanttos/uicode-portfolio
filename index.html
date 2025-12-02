@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Ícone do site (Favicon) - Certifique-se de ter o arquivo 'uicode.jpg' na pasta 'public' -->
+    <link rel="icon" type="image/jpeg" href="/uicode.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Cor da barra do navegador (Mobile) -->
+    <meta name="theme-color" content="#05050A" />
+    
+    <!-- SEO: Descrição para o Google e Compartilhamento -->
+    <title>UiCode.dev | Fullstack Developer</title>
+    <meta name="description" content="Portfólio de UiCode.dev. Desenvolvedor Fullstack especializado em React, Node.js e interfaces modernas." />
+    <meta name="author" content="UiCode.dev" />
+
+    <!-- Google Fonts: Inter (Texto) e JetBrains Mono (Código) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Estilo Crítico: Evita o "flash" branco antes do React carregar -->
+    <style>
+      body {
+        background-color: #05050A; /* Mesma cor do seu App.jsx */
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
