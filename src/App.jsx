@@ -254,7 +254,7 @@ const pricingPlans = [
       "Prioridade máxima em atualizações"
     ],
     highlight: true,
-    badge: "RECOMENDADO",
+    badge: "MAIOR RETORNO",
     color: "border-purple-500/80 shadow-[0_0_40px_rgba(168,85,247,0.4)] bg-gradient-to-b from-purple-900/20 to-transparent scale-105 z-10",
     buttonVariant: "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg shadow-purple-500/40 animate-pulse-slow hover:shadow-purple-500/60 hover:scale-105",
     paymentLink: "https://buy.stripe.com/test_eVq5kv7e2bbQ5ypfYy9k400" 
