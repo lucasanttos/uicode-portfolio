@@ -12,7 +12,8 @@ import {
   Code, Layout, Smartphone, Server, Globe, Mail, 
   Github, Linkedin, Instagram, ExternalLink, 
   Menu, X, Send, Zap, ArrowRight, CheckCircle2, 
-  HelpCircle, ChevronDown, ChevronUp, Star, Rocket
+  HelpCircle, ChevronDown, ChevronUp, Star, Rocket,
+  FileText, Shield, RefreshCw, CreditCard
 } from 'lucide-react';
 
 // ==================================================================================
@@ -120,6 +121,38 @@ const StatusIcon = ({ status }) => (
   status ? <CheckCircle2 size={18} className="text-green-400 mx-auto" /> : <X size={18} className="text-slate-600 mx-auto" />
 );
 
+// 5. Modal de Políticas 
+const PolicyModal = ({ isOpen, onClose, title, content }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+      />
+      <motion.div 
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+        className="relative bg-[#0A0A10] border border-white/10 w-full max-w-2xl max-h-[80vh] rounded-2xl shadow-2xl flex flex-col z-[101]"
+      >
+        <div className="flex items-center justify-between p-6 border-b border-white/10 bg-[#0A0A10] rounded-t-2xl sticky top-0 z-10">
+          <h3 className="text-xl font-bold text-white">{title}</h3>
+          <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-white">
+            <X size={20} />
+          </button>
+        </div>
+        <div className="p-6 overflow-y-auto custom-scrollbar text-slate-300 text-sm leading-relaxed space-y-4">
+          {content}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 // ==================================================================================
 // --- ÁREA DE DADOS ---
 // ==================================================================================
@@ -155,7 +188,7 @@ const projects = [
     description: "Página moderna focada em conversão para clínica veterinária. Navegação fluida, mobile-first e otimizada para agendamentos rápidos via WhatsApp.",
     tech: ["React", "Framer Motion", "UX Design"],
     color: "from-green-600 to-emerald-900",
-    link: "https://pet-green.netlify.app",
+    link: "https://pet-green.netlify.app/",
     image: "/petgreen.png" 
   },
   {
@@ -165,7 +198,7 @@ const projects = [
     description: "Landing Page premium de alta performance para cirurgião-dentista. Foco em SEO local, autoridade profissional e captação inteligente de pacientes.",
     tech: ["Next.js", "SEO", "TypeScript"],
     color: "from-blue-600 to-slate-900",
-    link: "https://dr-pedro-elino.netlify.app",
+    link: "https://dr-pedro-elino.netlify.app/",
     image: "/drpedro.png" 
   },
   {
@@ -175,7 +208,7 @@ const projects = [
     description: "Conceito Dark & Gold de alta performance. Resolve gargalos de atendimento com triagem automática e geração de links inteligentes para WhatsApp.",
     tech: ["React", "SPA", "WhatsApp API"],
     color: "from-yellow-600 to-amber-900", 
-    link: "https://la-famille-tattoo.netlify.app",
+    link: "https://la-famille-tattoo.netlify.app/",
     image: "/tattoo.png" 
   }
 ];
@@ -186,8 +219,7 @@ const skills = [
   "PostgreSQL", "React Native", "Figma", "Git"
 ];
 
-// --- DADOS DA PÁGINA DE PREÇOS (ESTRATÉGIA: INDUZIR PREMIUM) ---
-// REORGANIZADO: Basic -> Premium (Centro) -> Pro
+// --- DADOS DA PÁGINA DE PREÇOS (COM STRIPE) ---
 const pricingPlans = [
   {
     name: "Básico",
@@ -204,7 +236,8 @@ const pricingPlans = [
     ],
     highlight: false,
     color: "border-white/10 hover:border-white/20",
-    buttonVariant: "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"
+    buttonVariant: "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white",
+    paymentLink: "https://buy.stripe.com/test_4gMbITaqedjYd0R5jU9k401" 
   },
   {
     name: "Premium",
@@ -221,10 +254,10 @@ const pricingPlans = [
       "Prioridade máxima em atualizações"
     ],
     highlight: true,
-    badge: "MAIOR RETORNO",
+    badge: "RECOMENDADO",
     color: "border-purple-500/80 shadow-[0_0_40px_rgba(168,85,247,0.4)] bg-gradient-to-b from-purple-900/20 to-transparent scale-105 z-10",
-    buttonVariant: "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg shadow-purple-500/40 animate-pulse-slow hover:shadow-purple-500/60 hover:scale-105"
-  },
+    buttonVariant: "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg shadow-purple-500/40 animate-pulse-slow hover:shadow-purple-500/60 hover:scale-105",
+    paymentLink: "https://buy.stripe.com/test_eVq5kv7e2bbQ5ypfYy9k400" 
   {
     name: "Pro",
     price: "R$ 99,90",
@@ -240,7 +273,8 @@ const pricingPlans = [
     ],
     highlight: false,
     color: "border-blue-500/20 hover:border-blue-500/40",
-    buttonVariant: "bg-blue-900/30 text-blue-200 border border-blue-500/30 hover:bg-blue-900/50"
+    buttonVariant: "bg-blue-900/30 text-blue-200 border border-blue-500/30 hover:bg-blue-900/50",
+    paymentLink: "https://buy.stripe.com/test_eVq3cn8i66VA5yp4fQ9k402" 
   }
 ];
 
@@ -276,6 +310,9 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  
+  // Estado para controlar qual modal de política está aberto
+  const [activePolicy, setActivePolicy] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -288,15 +325,88 @@ export default function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // --- FUNÇÃO: Direciona para o WhatsApp com mensagem personalizada ---
-  const handleSubscribe = (planName, price) => {
+  // --- FUNÇÃO DE ASSINATURA INTELIGENTE (Stripe ou WhatsApp) ---
+  const handleSubscribe = (plan) => {
+    // 1. Tenta abrir o link do Stripe se existir
+    if (plan.paymentLink && plan.paymentLink.startsWith('http')) {
+      window.open(plan.paymentLink, '_blank');
+      return;
+    }
+
+    // 2. Fallback para WhatsApp se não tiver link do Stripe configurado
+    // ⚠️ SUBSTITUA PELO SEU NÚMERO REAL
     const phoneNumber = "5511916474626"; 
     
     const message = encodeURIComponent(
-      `Olá UiCode! 👋\n\nTenho interesse em contratar o *Plano ${planName}* (${price}).\n\nPoderia me explicar os próximos passos?`
+      `Olá UiCode! 👋\n\nTenho interesse em contratar o *Plano ${plan.name}* (${plan.price}).\n\nPoderia me explicar os próximos passos?`
     );
     
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+  };
+
+  // Conteúdo das Políticas
+  const policyContent = {
+    terms: (
+      <div className="space-y-4">
+        <p><strong>1. Aceitação dos termos</strong><br/>Ao acessar ou utilizar a plataforma UiCode.dev, o usuário concorda com estes Termos de Uso. Caso não concorde, não deve utilizar o serviço.</p>
+        
+        <p><strong>2. Descrição do serviço</strong><br/>O UiCode.dev oferece a criação, hospedagem e manutenção de páginas profissionais (landing pages), conforme o plano contratado. As funcionalidades variam de acordo com o plano escolhido pelo usuário.</p>
+        
+        <p><strong>3. Cadastro e responsabilidade do usuário</strong><br/>O usuário se compromete a:
+        <ul className="list-disc pl-5 mt-1 space-y-1">
+          <li>Fornecer informações verdadeiras no cadastro</li>
+          <li>Manter seus dados atualizados</li>
+          <li>Utilizar o serviço de forma legal</li>
+        </ul>
+        O usuário é responsável por todo o conteúdo inserido em sua página, incluindo textos, imagens e informações de contato.</p>
+        
+        <p><strong>4. Planos e pagamentos</strong><br/>O serviço é oferecido por assinatura mensal recorrente. A cobrança é feita automaticamente no método de pagamento cadastrado. Os valores e recursos de cada plano estão disponíveis na página de preços. O não pagamento poderá resultar na suspensão temporária do serviço até a regularização.</p>
+        
+        <p><strong>5. Cancelamento</strong><br/>O usuário pode cancelar a assinatura a qualquer momento, conforme descrito na Política de Cancelamento.</p>
+        
+        <p><strong>6. Suspensão e encerramento</strong><br/>O UiCode.dev pode suspender ou encerrar contas que:
+        <ul className="list-disc pl-5 mt-1 space-y-1">
+          <li>violem estes Termos</li>
+          <li>utilizem o serviço para fins ilegais</li>
+          <li>causem prejuízo técnico ou legal à plataforma</li>
+        </ul>
+        </p>
+        
+        <p><strong>7. Alterações nos termos</strong><br/>Estes Termos podem ser atualizados a qualquer momento. Recomenda-se que o usuário revise periodicamente.</p>
+        
+        <p><strong>8. Contato</strong><br/>Em caso de dúvidas, o usuário pode entrar em contato pelo e-mail: 📧 uicode.dev2026@gmail.com</p>
+      </div>
+    ),
+    privacy: (
+      <div className="space-y-4">
+        <p><strong>1. Coleta de dados</strong><br/>Coletamos apenas os dados necessários para o funcionamento do serviço, como: Nome, E-mail, Informações do site e Dados de pagamento (processados por terceiros).</p>
+        
+        <p><strong>2. Uso das informações</strong><br/>Os dados coletados são utilizados para: Criar e manter a conta do usuário, Processar pagamentos, Oferecer suporte e Melhorar o serviço.</p>
+        
+        <p><strong>3. Pagamentos</strong><br/>Os pagamentos são processados por plataformas externas seguras (ex: Stripe, Mercado Pago). O UiCode.dev não armazena dados de cartão de crédito.</p>
+        
+        <p><strong>4. Compartilhamento de dados</strong><br/>Não vendemos, alugamos ou compartilhamos dados pessoais com terceiros, exceto quando necessário para: Processamento de pagamentos e Cumprimento de obrigações legais.</p>
+        
+        <p><strong>5. Segurança</strong><br/>Adotamos medidas técnicas para proteger os dados dos usuários, incluindo conexões seguras (HTTPS).</p>
+        
+        <p><strong>6. Direitos do usuário</strong><br/>O usuário pode solicitar: Acesso aos seus dados, Correção e Exclusão. Basta entrar em contato pelo e-mail informado.</p>
+        
+        <p><strong>7. Alterações nesta política</strong><br/>Esta Política de Privacidade pode ser atualizada periodicamente.</p>
+      </div>
+    ),
+    cancellation: (
+      <div className="space-y-4">
+        <p><strong>1. Cancelamento da assinatura</strong><br/>O usuário pode cancelar sua assinatura a qualquer momento, diretamente pela plataforma ou entrando em contato com o suporte.</p>
+        
+        <p><strong>2. Efeitos do cancelamento</strong><br/>O acesso ao serviço permanece ativo até o final do período já pago. Após esse período, o site poderá ser suspenso.</p>
+        
+        <p><strong>3. Reembolsos</strong><br/>Não realizamos reembolso proporcional de valores já pagos, exceto quando exigido por lei.</p>
+        
+        <p><strong>4. Inadimplência</strong><br/>Em caso de falha no pagamento: O usuário será notificado e o serviço poderá ser suspenso até a regularização.</p>
+        
+        <p><strong>5. Exclusão de dados</strong><br/>Após o cancelamento, os dados poderão ser excluídos após um período razoável, salvo obrigações legais.</p>
+      </div>
+    )
   };
 
   return (
@@ -664,7 +774,7 @@ export default function App() {
                   {plan.highlight && (
                     <div className="absolute top-0 right-0 overflow-hidden rounded-tr-[2rem] rounded-bl-2xl">
                       <div className="bg-gradient-to-bl from-purple-600 to-pink-600 text-white text-[10px] font-bold px-6 py-2 shadow-lg tracking-wider flex items-center gap-1">
-                        <Star size={10} className="fill-white" /> {plan.badge || "Maior Retorno"}
+                        <Star size={10} className="fill-white" /> {plan.badge || "RECOMENDADO"}
                       </div>
                     </div>
                   )}
@@ -686,9 +796,10 @@ export default function App() {
                   </ul>
 
                   <button 
-                    onClick={() => handleSubscribe(plan.name, plan.price)}
+                    onClick={() => handleSubscribe(plan)}
                     className={`w-full py-4 rounded-xl font-bold text-sm transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 ${plan.buttonVariant}`}
                   >
+                    {plan.paymentLink ? <CreditCard size={16} /> : null}
                     Escolher {plan.name} {plan.highlight && <Rocket size={16} />}
                   </button>
                 </SpotlightCard>
@@ -822,13 +933,48 @@ export default function App() {
 
       {/* --- FOOTER --- */}
       <footer className="py-12 border-t border-white/5 bg-[#020204]">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} UiCode.dev</p>
-          <p className="flex items-center gap-2">
-            Desenvolvido por <span className="text-red-500"></span> UiCode
-          </p>
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm mb-8">
+            <p>&copy; {new Date().getFullYear()} UiCode.dev</p>
+            <p className="flex items-center gap-2">
+              Desenvolvido com <span className="text-red-500">♥</span> & React
+            </p>
+          </div>
+          
+          <div className="flex flex-wrap justify-center md:justify-end gap-6 text-xs text-slate-600">
+            <button 
+              onClick={() => setActivePolicy('terms')} 
+              className="hover:text-cyan-400 transition-colors flex items-center gap-1"
+            >
+              <FileText size={14} /> Termos de Uso
+            </button>
+            <button 
+              onClick={() => setActivePolicy('privacy')} 
+              className="hover:text-cyan-400 transition-colors flex items-center gap-1"
+            >
+              <Shield size={14} /> Política de Privacidade
+            </button>
+            <button 
+              onClick={() => setActivePolicy('cancellation')} 
+              className="hover:text-cyan-400 transition-colors flex items-center gap-1"
+            >
+              <RefreshCw size={14} /> Política de Cancelamento
+            </button>
+          </div>
         </div>
       </footer>
+
+      {/* Modal de Políticas */}
+      <AnimatePresence>
+        {activePolicy && (
+          <PolicyModal 
+            isOpen={!!activePolicy} 
+            onClose={() => setActivePolicy(null)}
+            title={activePolicy === 'terms' ? 'Termos de Uso' : activePolicy === 'privacy' ? 'Política de Privacidade' : 'Política de Cancelamento'}
+            content={policyContent[activePolicy]}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
