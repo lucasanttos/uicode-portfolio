@@ -11,7 +11,8 @@ import {
 import { 
   Code, Layout, Smartphone, Server, Globe, Mail, 
   Github, Linkedin, Instagram, ExternalLink, 
-  Menu, X, Send, Zap, ArrowRight, CheckCircle2
+  Menu, X, Send, Zap, ArrowRight, CheckCircle2, 
+  HelpCircle, ChevronDown, ChevronUp, Star, Rocket
 } from 'lucide-react';
 
 // ==================================================================================
@@ -19,7 +20,7 @@ import {
 // ==================================================================================
 
 // 1. Efeito de Spotlight (Luz segue o mouse nos cards)
-const SpotlightCard = ({ children, className = "" }) => {
+const SpotlightCard = ({ children, className = "", spotlightColor = "rgba(6, 182, 212, 0.15)" }) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -40,13 +41,13 @@ const SpotlightCard = ({ children, className = "" }) => {
           background: useMotionTemplate`
             radial-gradient(
               650px circle at ${mouseX}px ${mouseY}px,
-              rgba(6, 182, 212, 0.15),
+              ${spotlightColor},
               transparent 80%
             )
           `,
         }}
       />
-      <div>{children}</div>
+      <div className="relative h-full">{children}</div>
     </div>
   );
 };
@@ -83,6 +84,42 @@ const GradientText = ({ text, className = "" }) => {
   );
 };
 
+// 4. Item de FAQ (Acordeão)
+const FAQItem = ({ question, answer }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border-b border-white/10 last:border-0">
+      <button 
+        onClick={() => setIsOpen(!isOpen)} 
+        className="w-full py-4 flex justify-between items-center text-left hover:text-cyan-400 transition-colors"
+      >
+        <span className="font-medium text-lg text-slate-200">{question}</span>
+        {isOpen ? <ChevronUp size={20} className="text-cyan-400" /> : <ChevronDown size={20} className="text-slate-500" />}
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <p className="pb-4 text-slate-400 text-sm leading-relaxed">
+              {answer}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// Componente para Check/Cross na tabela
+const StatusIcon = ({ status }) => (
+  status ? <CheckCircle2 size={18} className="text-green-400 mx-auto" /> : <X size={18} className="text-slate-600 mx-auto" />
+);
+
 // ==================================================================================
 // --- ÁREA DE DADOS ---
 // ==================================================================================
@@ -110,7 +147,6 @@ const services = [
   }
 ];
 
-// --- PROJETOS  ---
 const projects = [
   {
     id: 1,
@@ -119,7 +155,7 @@ const projects = [
     description: "Página moderna focada em conversão para clínica veterinária. Navegação fluida, mobile-first e otimizada para agendamentos rápidos via WhatsApp.",
     tech: ["React", "Framer Motion", "UX Design"],
     color: "from-green-600 to-emerald-900",
-    link: "https://pet-green.netlify.app/",
+    link: "https://pet-green.netlify.app",
     image: "/petgreen.png" 
   },
   {
@@ -129,8 +165,8 @@ const projects = [
     description: "Landing Page premium de alta performance para cirurgião-dentista. Foco em SEO local, autoridade profissional e captação inteligente de pacientes.",
     tech: ["Next.js", "SEO", "TypeScript"],
     color: "from-blue-600 to-slate-900",
-    link: "https://dr-pedro-elino.netlify.app/",
-    image: "/drpedro.png"  
+    link: "https://dr-pedro-elino.netlify.app",
+    image: "/drpedro.png" 
   },
   {
     id: 3,
@@ -139,7 +175,7 @@ const projects = [
     description: "Conceito Dark & Gold de alta performance. Resolve gargalos de atendimento com triagem automática e geração de links inteligentes para WhatsApp.",
     tech: ["React", "SPA", "WhatsApp API"],
     color: "from-yellow-600 to-amber-900", 
-    link: "https://la-famille-tattoo.netlify.app/",
+    link: "https://la-famille-tattoo.netlify.app",
     image: "/tattoo.png" 
   }
 ];
@@ -149,6 +185,88 @@ const skills = [
   "Tailwind", "Framer Motion", "Docker", "AWS", 
   "PostgreSQL", "React Native", "Figma", "Git"
 ];
+
+// --- DADOS DA PÁGINA DE PREÇOS (ESTRATÉGIA: INDUZIR PREMIUM) ---
+// REORGANIZADO: Basic -> Premium (Centro) -> Pro
+const pricingPlans = [
+  {
+    name: "Básico",
+    price: "R$ 79,90",
+    period: "/ mês",
+    description: "Para quem quer estar na internet sem complicação",
+    features: [
+      "Site profissional pronto",
+      "Site sempre no ar (hospedagem inclusa)",
+      "Site seguro (cadeado no navegador)",
+      "Botão do WhatsApp",
+      "Endereço padrão do sistema",
+      "Suporte por e-mail"
+    ],
+    highlight: false,
+    color: "border-white/10 hover:border-white/20",
+    buttonVariant: "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"
+  },
+  {
+    name: "Premium",
+    price: "R$ 129,90",
+    period: "/ mês",
+    description: "A escolha inteligente. Domine seu mercado com todas as ferramentas de conversão.",
+    features: [
+      "Tudo do Pro",
+      "Endereço próprio (.com.br)",
+      "Visual exclusivo e personalizado",
+      "Foco total em alta conversão",
+      "Relatórios detalhados de performance",
+      "Suporte VIP direto no WhatsApp",
+      "Prioridade máxima em atualizações"
+    ],
+    highlight: true,
+    badge: "MAIOR RETORNO",
+    color: "border-purple-500/80 shadow-[0_0_40px_rgba(168,85,247,0.4)] bg-gradient-to-b from-purple-900/20 to-transparent scale-105 z-10",
+    buttonVariant: "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg shadow-purple-500/40 animate-pulse-slow hover:shadow-purple-500/60 hover:scale-105"
+  },
+  {
+    name: "Pro",
+    price: "R$ 99,90",
+    period: "/ mês",
+    description: "Uma boa opção para começar a gerar contatos.",
+    features: [
+      "Tudo do Básico",
+      "Site otimizado (SEO Google)",
+      "Botões WhatsApp c/ mensagens prontas",
+      "Mudanças ilimitadas no conteúdo",
+      "Relatório simples de visitas",
+      "Suporte rápido por chat"
+    ],
+    highlight: false,
+    color: "border-blue-500/20 hover:border-blue-500/40",
+    buttonVariant: "bg-blue-900/30 text-blue-200 border border-blue-500/30 hover:bg-blue-900/50"
+  }
+];
+
+const comparisonData = [
+  { feature: "Site profissional", basic: true, pro: true, premium: true },
+  { feature: "Hospedagem inclusa", basic: true, pro: true, premium: true },
+  { feature: "Site seguro", basic: true, pro: true, premium: true },
+  { feature: "Botão WhatsApp", basic: true, pro: true, premium: true },
+  { feature: "Otimização Google", basic: false, pro: true, premium: true },
+  { feature: "Mudanças no site", basic: false, pro: true, premium: true },
+  { feature: "Relatórios", basic: false, pro: true, premium: true },
+  { feature: "Endereço próprio", basic: false, pro: false, premium: true },
+  { feature: "Suporte WhatsApp", basic: false, pro: false, premium: true },
+];
+
+const faqData = [
+  { q: "O que é o endereço próprio?", a: "É o endereço do seu site com o nome do seu negócio, por exemplo: seunegocio.com.br. Isso passa muito mais confiança para seus clientes do que um link genérico." },
+  { q: "Posso trocar de plano depois?", a: "Sim! Você pode subir ou descer de plano quando quiser, sem burocracia." },
+  { q: "Preciso saber mexer em site?", a: "Não. Nós cuidamos de toda a parte técnica para você focar no seu negócio." },
+  { q: "O site funciona no celular?", a: "Sim. Ele é totalmente responsivo e se adapta automaticamente ao celular, tablet e computador." },
+  { q: "Tem fidelidade?", a: "Não. Você pode cancelar a assinatura quando quiser, sem multas." },
+];
+
+// ==================================================================================
+// --- COMPONENTES AUXILIARES ---
+// ==================================================================================
 
 // ==================================================================================
 // --- COMPONENTE PRINCIPAL ---
@@ -170,27 +288,32 @@ export default function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // --- FUNÇÃO: Direciona para o WhatsApp com mensagem personalizada ---
+  const handleSubscribe = (planName, price) => {
+    const phoneNumber = "5511916474626"; 
+    
+    const message = encodeURIComponent(
+      `Olá UiCode! 👋\n\nTenho interesse em contratar o *Plano ${planName}* (${price}).\n\nPoderia me explicar os próximos passos?`
+    );
+    
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+  };
+
   return (
     <div className="relative min-h-screen bg-[#020204] text-slate-200 font-sans selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-hidden">
       
-      {/* --- BARRA DE PROGRESSO DE SCROLL SUPERIOR --- */}
+      {/* --- BARRA DE PROGRESSO --- */}
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 origin-left z-[60]" style={{ scaleX }} />
 
-      {/* --- AMBIENTE VISUAL (NOISE + AURORA) --- */}
+      {/* --- AMBIENTE VISUAL --- */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        {/* Noise Overlay (Textura de filme) */}
         <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: `url("https://grainy-gradients.vercel.app/noise.svg")` }}></div>
-        
-        {/* Aurora Background (Gradientes móveis) */}
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/20 rounded-full blur-[120px] animate-pulse-slow"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-cyan-900/10 rounded-full blur-[120px] animate-pulse-slow delay-1000"></div>
-        <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[30%] h-[30%] bg-blue-900/10 rounded-full blur-[100px]"></div>
-        
-        {/* Grid Tecnológico */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_100%)]"></div>
       </div>
 
-      {/* --- HEADER FLUTUANTE --- */}
+      {/* --- HEADER --- */}
       <motion.header 
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -215,10 +338,10 @@ export default function App() {
           </div>
 
           <nav className="hidden md:flex items-center gap-8">
-            {['Serviços', 'Projetos', 'Habilidades'].map((item) => (
+            {['Serviços', 'Projetos', 'Planos', 'Contato'].map((item) => (
               <button 
                 key={item}
-                onClick={() => scrollToSection(item === 'Projetos' ? 'projects' : item === 'Serviços' ? 'services' : 'skills')}
+                onClick={() => scrollToSection(item === 'Planos' ? 'pricing' : item === 'Projetos' ? 'projects' : item === 'Serviços' ? 'services' : 'contact')}
                 className="text-sm font-medium text-slate-400 hover:text-white transition-colors relative group"
               >
                 {item}
@@ -257,13 +380,13 @@ export default function App() {
               <X size={32} />
             </button>
             <div className="flex flex-col gap-8 text-center">
-              {['Início', 'Serviços', 'Projetos', 'Habilidades', 'Contato'].map((item, i) => (
+              {['Início', 'Serviços', 'Projetos', 'Planos', 'Contato'].map((item, i) => (
                 <motion.button
                   key={item}
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: i * 0.1 }}
-                  onClick={() => scrollToSection(item === 'Projetos' ? 'projects' : item === 'Início' ? 'home' : item === 'Serviços' ? 'services' : item === 'Habilidades' ? 'skills' : 'contact')}
+                  onClick={() => scrollToSection(item === 'Planos' ? 'pricing' : item === 'Projetos' ? 'projects' : item === 'Início' ? 'home' : item === 'Serviços' ? 'services' : 'contact')}
                   className="text-3xl font-bold text-white hover:text-cyan-400 transition-colors"
                 >
                   {item}
@@ -294,7 +417,7 @@ export default function App() {
             </motion.div>
             
             <h1 className="text-6xl md:text-8xl font-bold leading-[0.9] tracking-tighter mb-8">
-              Code <br />
+              Código <br />
               <span className="text-slate-700">Design</span> <br />
               <GradientText text="Surpreenda." />
             </h1>
@@ -316,7 +439,7 @@ export default function App() {
             </div>
           </motion.div>
 
-          {/* Abstract Hero Visual */}
+          {/* Visual Abstrato Hero */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -324,7 +447,6 @@ export default function App() {
             className="relative hidden lg:block"
           >
             <div className="relative w-full aspect-square max-w-lg mx-auto">
-              {/* Círculos Orbitais */}
               <motion.div 
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -335,7 +457,6 @@ export default function App() {
                 transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
                 className="absolute inset-12 rounded-full border border-dotted border-purple-500/20"
               />
-              {/* Cartão Central Flutuante */}
               <motion.div
                 animate={{ y: [-10, 10, -10] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -359,7 +480,6 @@ export default function App() {
           </motion.div>
         </div>
         
-        {/* Scroll Indicator */}
         <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -370,7 +490,7 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* --- SERVICES (GLASS CARDS) --- */}
+      {/* --- SERVICES --- */}
       <section id="services" className="py-32 relative">
         <div className="container px-6 mx-auto">
           <motion.div 
@@ -397,7 +517,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- PROJECTS (VISUAL IMPACT) --- */}
+      {/* --- PROJECTS --- */}
       <section id="projects" className="py-32 bg-black/20">
         <div className="container px-6 mx-auto">
           <motion.div 
@@ -423,13 +543,10 @@ export default function App() {
                 transition={{ duration: 0.8 }}
                 className={`flex flex-col lg:flex-row gap-12 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
               >
-                {/* Visual do Projeto */}
+                {/* Visual */}
                 <div className="w-full lg:w-3/5 group relative">
                   <div className={`absolute -inset-4 bg-gradient-to-r ${project.color} opacity-20 blur-2xl group-hover:opacity-30 transition-opacity duration-500 rounded-[3rem]`}></div>
                   <div className="relative aspect-video bg-[#0a0a0a] rounded-3xl border border-white/10 overflow-hidden shadow-2xl group-hover:-translate-y-2 transition-transform duration-500">
-                    
-                    {/* LÓGICA DE EXIBIÇÃO DE IMAGEM */}
-                    {/* Se tiver imagem, mostra ela. Se não, mostra o card decorativo padrão */}
                     {project.image ? (
                       <div className="relative w-full h-full">
                         <img 
@@ -437,11 +554,9 @@ export default function App() {
                           alt={project.title} 
                           className="w-full h-full object-cover object-top opacity-90 group-hover:scale-105 transition-all duration-700" 
                         />
-                        {/* Overlay Gradiente para texto ficar legível se tiver */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
                       </div>
                     ) : (
-                      /* Interface Simulada (Fallback se não tiver imagem) */
                       <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent p-8 flex flex-col">
                         <div className="flex gap-2 mb-4">
                           <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
@@ -451,16 +566,15 @@ export default function App() {
                         <div className="flex-1 bg-white/5 rounded-xl border border-white/5 w-full flex items-center justify-center flex-col gap-4">
                           <span className="font-mono text-sm text-white/30">Sem_Imagem.jpg</span>
                           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-black/40 border border-white/10 text-xs font-mono text-cyan-400">
-                            <CheckCircle2 size={12} /> Em Breve
+                            <CheckCircle2 size={12} /> UX Mobile-First
                           </div>
                         </div>
                       </div>
                     )}
-
                   </div>
                 </div>
 
-                {/* Informações do Projeto */}
+                {/* Info */}
                 <div className="w-full lg:w-2/5 space-y-6">
                   <span className="text-cyan-400 font-mono text-sm tracking-widest uppercase">0{project.id} — {project.category}</span>
                   <h3 className="text-4xl font-bold">{project.title}</h3>
@@ -489,7 +603,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- SKILLS (GRID INFINITO) --- */}
+      {/* --- SKILLS --- */}
       <section id="skills" className="py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#020204] via-cyan-900/10 to-[#020204]"></div>
         <div className="container px-6 mx-auto relative z-10">
@@ -514,6 +628,114 @@ export default function App() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* --- NOVA SEÇÃO DE PREÇOS (PRICING) --- */}
+      <section id="pricing" className="py-32 relative">
+        <div className="container px-6 mx-auto max-w-6xl">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Planos e Assinaturas</h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+              Tenha um site profissional que ajuda seus clientes a falarem com você. <br />
+              <span className="text-cyan-400 font-bold">💡 Com apenas 1 cliente novo por mês, o site já se paga.</span>
+            </p>
+          </motion.div>
+
+          {/* Cards de Planos */}
+          <div className="grid md:grid-cols-3 gap-8 mb-24 relative z-10">
+            {pricingPlans.map((plan, i) => (
+              <div key={i} className="relative group">
+                {/* Efeito Glow para o card em destaque */}
+                {plan.highlight && (
+                  <div className="absolute -inset-1 bg-gradient-to-b from-purple-600/30 to-transparent blur-xl rounded-[2rem] opacity-75"></div>
+                )}
+                
+                <SpotlightCard 
+                  className={`h-full flex flex-col p-8 rounded-[2rem] bg-[#0A0A10] transition-all duration-300 ${plan.color}`}
+                  spotlightColor={plan.highlight ? "rgba(168, 85, 247, 0.2)" : "rgba(6, 182, 212, 0.1)"}
+                >
+                  {/* Badge REPOSICIONADO: Canto Superior Direito (Estilo Fita/Canto) */}
+                  {plan.highlight && (
+                    <div className="absolute top-0 right-0 overflow-hidden rounded-tr-[2rem] rounded-bl-2xl">
+                      <div className="bg-gradient-to-bl from-purple-600 to-pink-600 text-white text-[10px] font-bold px-6 py-2 shadow-lg tracking-wider flex items-center gap-1">
+                        <Star size={10} className="fill-white" /> {plan.badge || "Maior Retorno"}
+                      </div>
+                    </div>
+                  )}
+
+                  <h3 className="text-xl font-bold text-white mb-2 mt-2">{plan.name}</h3>
+                  <div className="flex items-baseline gap-1 mb-4">
+                    <span className="text-4xl font-bold text-white tracking-tight">{plan.price}</span>
+                    <span className="text-slate-500 text-sm">{plan.period}</span>
+                  </div>
+                  <p className="text-slate-400 text-sm mb-8 h-10">{plan.description}</p>
+
+                  <ul className="space-y-4 mb-8 flex-1">
+                    {plan.features.map((feat, idx) => (
+                      <li key={idx} className="flex items-start gap-3 text-sm text-slate-300">
+                        <CheckCircle2 size={16} className={`shrink-0 mt-0.5 ${plan.highlight ? 'text-purple-400' : 'text-cyan-500'}`} />
+                        {feat}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button 
+                    onClick={() => handleSubscribe(plan.name, plan.price)}
+                    className={`w-full py-4 rounded-xl font-bold text-sm transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 ${plan.buttonVariant}`}
+                  >
+                    Escolher {plan.name} {plan.highlight && <Rocket size={16} />}
+                  </button>
+                </SpotlightCard>
+              </div>
+            ))}
+          </div>
+
+          {/* Tabela Comparativa */}
+          <div className="mb-24 overflow-x-auto">
+            <div className="min-w-[700px] bg-[#0A0A10]/50 border border-white/10 rounded-3xl p-8 backdrop-blur-sm">
+              <h3 className="text-2xl font-bold mb-8 text-center">Comparativo Detalhado</h3>
+              <div className="grid grid-cols-4 gap-4 mb-6 pb-4 border-b border-white/10 text-center font-bold text-slate-300">
+                <div className="text-left pl-4">Recurso</div>
+                <div className="text-slate-400">Básico</div>
+                <div className="text-purple-400">Premium ⭐</div>
+                <div className="text-blue-400">Pro</div>
+              </div>
+              
+              <div className="space-y-4">
+                {comparisonData.map((row, i) => (
+                  <div key={i} className="grid grid-cols-4 gap-4 items-center text-center py-3 hover:bg-white/5 rounded-lg transition-colors">
+                    <div className="text-left pl-4 font-medium text-slate-300 text-sm">{row.feature}</div>
+                    <div><StatusIcon status={row.basic} /></div>
+                    <div><StatusIcon status={row.premium} /></div>
+                    <div><StatusIcon status={row.pro} /></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 mb-4">
+                <HelpCircle className="text-cyan-400" />
+              </div>
+              <h3 className="text-3xl font-bold">Perguntas Frequentes</h3>
+            </div>
+            
+            <div className="space-y-2">
+              {faqData.map((item, i) => (
+                <FAQItem key={i} question={item.q} answer={item.a} />
+              ))}
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -603,7 +825,7 @@ export default function App() {
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
           <p>&copy; {new Date().getFullYear()} UiCode.dev</p>
           <p className="flex items-center gap-2">
-            Desenvolvido pro <span className="text-red-500"></span> UiCode.dev
+            Desenvolvido por <span className="text-red-500"></span> UiCode
           </p>
         </div>
       </footer>
