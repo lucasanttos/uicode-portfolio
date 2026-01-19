@@ -938,7 +938,7 @@ export default function App() {
           <div className="flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm mb-8">
             <p>&copy; {new Date().getFullYear()} UiCode.dev</p>
             <p className="flex items-center gap-2">
-              Desenvolvido com <span className="text-red-500">♥</span> & React
+              Desenvolvido por UiCode.dev
             </p>
           </div>
           
