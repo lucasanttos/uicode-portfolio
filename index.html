@@ -2,30 +2,112 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <!-- Ícone do site (Favicon) - Certifique-se de ter o arquivo 'uicode.jpg' na pasta 'public' -->
-    <link rel="icon" type="image/jpeg" href="/uicode.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- Cor da barra do navegador (Mobile) -->
-    <meta name="theme-color" content="#05050A" />
-    
-    <!-- SEO: Descrição para o Google e Compartilhamento -->
-    <title>UiCode.dev | Fullstack Developer</title>
-    <meta name="description" content="Portfólio de UiCode.dev. Desenvolvedor Fullstack especializado em React, Node.js e interfaces modernas." />
-    <meta name="author" content="UiCode.dev" />
+    <!-- 
+      🚀 TÍTULO 
 
-    <!-- Google Fonts: Inter (Texto) e JetBrains Mono (Código) -->
+    -->
+    <title>Criação de Sites, Lojas Virtuais e Apps | UiCode.dev</title>
+
+    <!-- 
+       DESCRIÇÃO 
+    -->
+    <meta name="description" content="Desenvolvimento de sites profissionais, lojas virtuais, landing pages de alta conversão e aplicativos móveis. Transforme sua identidade digital com a UiCode. Solicite um orçamento!" />
+    
+    <!-- PALAVRAS-CHAVE (Keywords) -->
+    <meta name="keywords" content="criar site, criar loja virtual, desenvolvimento web, programador react, landing page, criar aplicativo, identidade digital, site profissional, uicode" />
+    
+    <!-- AUTOR E ROBÔS -->
+    <meta name="author" content="UiCode.dev - Lucas Santos" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- CANONICAL URL (Evita conteúdo duplicado) -->
+    <link rel="canonical" href="https://uicode.site/" />
+
+    <!-- 
+      📱 OPEN GRAPH (WhatsApp, Facebook, LinkedIn)
+      Como o site aparece quando o link é enviado.
+    -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://uicode.site/" />
+    <meta property="og:title" content="UiCode | Soluções Digitais Profissionais" />
+    <meta property="og:description" content="Precisa de um site ou loja virtual? Desenvolvemos soluções modernas e otimizadas para o seu negócio crescer na internet." />
+    <!-- DICA: Crie uma imagem de capa 1200x630px chamada 'og-image.png' e coloque na pasta public -->
+    <meta property="og:image" content="https://uicode.site/uicode.jpeg" />
+
+    <!-- TWITTER CARDS -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Criação de Sites e Apps | UiCode.dev" />
+    <meta name="twitter:description" content="Desenvolvimento Fullstack de alta performance. React, Node.js e Mobile." />
+    <meta name="twitter:image" content="https://uicode.site/uicode.jpeg" />
+
+    <!-- FAVICON E TEMA -->
+    <link rel="icon" type="image/png" href="/uicode.jpeg" />
+    <meta name="theme-color" content="#05050A" />
+
+    <!-- FONTS (Performance: Preconnect) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <!-- Estilo Crítico: Evita o "flash" branco antes do React carregar -->
+    <!-- 
+      🧠 SCHEMA MARKUP (JSON-LD)
+      Isso ensina ao Google que você é um prestador de serviço profissional.
+      Ajuda muito no SEO Local e em buscas específicas.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "UiCode.dev",
+        "image": "https://uicode.site/uicode.jpeg",
+        "@id": "https://uicode.site",
+        "url": "https://uicode.site",
+        "telephone": "", 
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "BR"
+        },
+        "description": "Agência de desenvolvimento web especializada em criação de sites, e-commerce e aplicativos mobile.",
+        "offers": {
+          "@type": "Offer",
+          "itemOffered": [
+            {
+              "@type": "Service",
+              "name": "Criação de Sites Profissionais"
+            },
+            {
+              "@type": "Service",
+              "name": "Desenvolvimento de Lojas Virtuais"
+            },
+            {
+              "@type": "Service",
+              "name": "Criação de Landing Pages"
+            },
+            {
+              "@type": "Service",
+              "name": "Desenvolvimento de Aplicativos Mobile"
+            }
+          ]
+        },
+        "sameAs": [
+          "https://instagram.com/uicode.dev",
+          "https://linkedin.com/in/lucasanttos-dev/"
+        ]
+      }
+    </script>
+
+    <!-- ESTILO CRÍTICO (Evita tela branca) -->
     <style>
       body {
-        background-color: #05050A; /* Mesma cor do seu App.jsx */
+        background-color: #05050A;
         margin: 0;
         padding: 0;
         font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
     </style>
   </head>
